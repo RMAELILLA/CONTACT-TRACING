@@ -34,11 +34,13 @@ class ContactInfoFrame(tk.Frame):
         phone = self.entry_phone.get()
 
         if name and email and phone:
-            self.master.contact_info = {
-                "Name": name,
-                "Email": email,
-                "Phone": phone
-            }
+            message = f"Contact Information:\nName: {name}\nEmail: {email}\nPhone: {phone}"
+            messagebox.showinfo("Contact Information", message)
+
+            # Clear the entry fields after successful submission
+            self.entry_name.delete(0, tk.END)
+            self.entry_email.delete(0, tk.END)
+            self.entry_phone.delete(0, tk.END)
 
             self.next_callback()
         else:
