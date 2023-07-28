@@ -39,6 +39,35 @@ class QuestionsFrame(tk.Frame):
         self.next_button = tk.Button(self, text="Next", command=self.save_answer)
         self.next_button.grid(row=2, column=0, columnspan=2, padx=10, pady=10)
 
+        self.show_next_question()
+
+    def save_answer(self):
+        answer = self.selected_option.get()
+        if answer:
+            self.answers.append(answer)
+            self.selected_option.set("")
+            self.show_next_question()
+        else:
+            messagebox.showerror("Error", "Please select an option.")
+
+    def show_next_question(self):
+        if self.current_question < len(self.questions):
+            self.question_label.config(text=self.questions[self.current_question])
+            for widget in self.option_frame.winfo_children():
+                widget.destroy()
+            for option in self.options[self.current_question]:
+                tk.Radiobutton(self.option_frame, text=option, variable=self.selected_option, value=option).pack(anchor='w')
+            self.current_question += 1
+        else:
+            self.display_contact_details()
+
+    def display_contact_details(self):
+        message = "Contact Details:\n"
+        for i in range(len(self.questions)):
+            message += f"{i + 1}. {self.questions[i]}\nAnswer: {self.answers[i]}\n"
+        messagebox.showinfo("Contact Tracing Information", message)
+        self.back_callback()
+
     # prompt only 
         #if in number 3-4 = "yes" and in number 5 ="Yes-Positve or Yes-pending"
             # When was your most visit to this location?
