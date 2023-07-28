@@ -11,15 +11,20 @@ class MainApp(tk.Tk):
 
         self.contact_info_frame.grid(row=0, column=0, padx=10, pady=5, columnspan=2)
         self.questions_frame.grid(row=0, column=0, padx=10, pady=5, columnspan=2)
-        self.questions_frame.grid_forget()
+        self.questions_frame.grid_forget()  # Hide the QuestionsFrame initially
 
     def show_contact_info_frame(self):
         self.questions_frame.grid_forget()
         self.contact_info_frame.grid()
 
     def show_questions_frame(self):
-        self.contact_info_frame.grid_forget()
-        self.questions_frame.grid()
+        contact_info = self.contact_info_frame.get_contact_info()
+        if contact_info:
+            self.questions_frame.contact_info = contact_info
+            self.contact_info_frame.grid_forget()
+            self.questions_frame.grid()
+        else:
+            tk.messagebox.showerror("Error", "Please fill in all contact details.")
 
 if __name__ == "__main__":
     app = MainApp()
