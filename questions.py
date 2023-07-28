@@ -1,4 +1,3 @@
-    # Prompt each frame for each number
 import tkinter as tk
 from tkinter import messagebox
 
@@ -51,20 +50,29 @@ class QuestionsFrame(tk.Frame):
         else:
             messagebox.showerror("Error", "Please select an option.")
 
-    # prompt only 
-        #if in number 3-4 = "yes" and in number 5 ="Yes-Positve or Yes-pending"
-            # When was your most visit to this location?
-            # Since then until today, what places have you been? (beside home)
-            
+    def show_entry_for_location_visit(self):
+        entry_label = tk.Label(self.option_frame, text="Date of most recent visit:")
+        entry_label.pack(anchor='w')
+        entry = tk.Entry(self.option_frame)
+        entry.pack(anchor='w')
+        self.answers.append(entry)
+
+    def show_entry_for_places_visited(self):
+        entry_label = tk.Label(self.option_frame, text="Places visited since exposure:")
+        entry_label.pack(anchor='w')
+        entry = tk.Entry(self.option_frame)
+        entry.pack(anchor='w')
+        self.answers.append(entry)
+
     def show_next_question(self):
         if self.current_question == 2:
-            if self.answers[2] == "Yes":
+            if len(self.answers) > 2 and self.answers[2] == "Yes":
                 self.question_label.config(text="When was your most visit to this location?")
                 self.show_entry_for_location_visit()
             else:
                 self.show_regular_question()
         elif self.current_question == 3:
-            if self.answers[3] == "Yes":
+            if len(self.answers) > 3 and self.answers[3] == "Yes":
                 self.question_label.config(text="Since then until today, what places have you been? (besides home)")
                 self.show_entry_for_places_visited()
             else:
@@ -93,4 +101,3 @@ class QuestionsFrame(tk.Frame):
 
         messagebox.showinfo("Contact Tracing Information", message)
         self.back_callback()
-
