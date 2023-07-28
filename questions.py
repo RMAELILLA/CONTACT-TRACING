@@ -61,7 +61,11 @@ class QuestionsFrame(tk.Frame):
             messagebox.showerror("Error", "Please select an option for the current question.")
 
     def show_next_question(self):
+        if self.additional_questions_displayed:
+            return
+
         self.additional_questions_displayed = False  # Reset the flag for each new question
+
         if self.current_question == 1 and len(self.answers) >= 2 and self.answers[1] == "Yes":
             self.additional_questions_displayed = True
             self.show_additional_questions()
@@ -74,11 +78,12 @@ class QuestionsFrame(tk.Frame):
         elif self.current_question == 4 and len(self.answers) >= 5 and any(answer.startswith("Yes") for answer in self.answers[4:]):
             self.additional_questions_displayed = True
             self.show_additional_questions()
-        elif self.current_question < len(self.questions) - 1:
-            self.current_question += 1
-            self.show_regular_question()
         else:
-            self.display_contact_details()
+            if self.current_question < len(self.questions) - 1:
+                self.current_question += 1
+                self.show_regular_question()
+            else:
+                self.display_contact_details()
 
     def show_regular_question(self):
         self.question_label.config(text=self.questions[self.current_question])
