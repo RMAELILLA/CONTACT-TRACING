@@ -62,9 +62,14 @@ class QuestionsFrame(tk.Frame):
             self.display_contact_details()
 
     def display_contact_details(self):
-        message = "Contact Details:\n"
+        contact_info_message = "Contact Details:\n"
+        for key, value in self.contact_info.items():
+            contact_info_message += f"{key}: {value}\n"
+
+        message = contact_info_message + "\nAnswers to Questions:\n"
         for i in range(len(self.questions)):
             message += f"{i + 1}. {self.questions[i]}\nAnswer: {self.answers[i]}\n"
+
         messagebox.showinfo("Contact Tracing Information", message)
         self.back_callback()
 
