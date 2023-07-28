@@ -34,12 +34,21 @@ class ContactInfoFrame(tk.Frame):
         phone = self.entry_phone.get()
 
         if name and email and phone:
-            self.master.contact_info = {
+            self.next_callback()
+        else:
+            messagebox.showerror("Error", "Please fill in all contact details.")
+            return
+
+    def get_contact_info(self):
+        name = self.entry_name.get()
+        email = self.entry_email.get()
+        phone = self.entry_phone.get()
+
+        if name and email and phone:
+            return {
                 "Name": name,
                 "Email": email,
                 "Phone": phone
             }
-
-            self.next_callback()
         else:
-            messagebox.showerror("Error", "Please fill in all contact details.")
+            return None
