@@ -7,6 +7,7 @@ class QuestionsFrame(tk.Frame):
         super().__init__(master)
         self.master = master
         self.back_callback = back_callback
+        self.contact_info = {}
 
         self.questions = [
             "Have you been vaccinated for COVID-19?",
@@ -50,16 +51,36 @@ class QuestionsFrame(tk.Frame):
         else:
             messagebox.showerror("Error", "Please select an option.")
 
+    # prompt only 
+        #if in number 3-4 = "yes" and in number 5 ="Yes-Positve or Yes-pending"
+            # When was your most visit to this location?
+            # Since then until today, what places have you been? (beside home)
+            
     def show_next_question(self):
-        if self.current_question < len(self.questions):
-            self.question_label.config(text=self.questions[self.current_question])
-            for widget in self.option_frame.winfo_children():
-                widget.destroy()
-            for option in self.options[self.current_question]:
-                tk.Radiobutton(self.option_frame, text=option, variable=self.selected_option, value=option).pack(anchor='w')
+        if self.current_question == 2:
+            if self.answers[2] == "Yes":
+                self.question_label.config(text="When was your most visit to this location?")
+                self.show_entry_for_location_visit()
+            else:
+                self.show_regular_question()
+        elif self.current_question == 3:
+            if self.answers[3] == "Yes":
+                self.question_label.config(text="Since then until today, what places have you been? (besides home)")
+                self.show_entry_for_places_visited()
+            else:
+                self.show_regular_question()
+        elif self.current_question < len(self.questions):
+            self.show_regular_question()
             self.current_question += 1
         else:
             self.display_contact_details()
+
+    def show_regular_question(self):
+        self.question_label.config(text=self.questions[self.current_question])
+        for widget in self.option_frame.winfo_children():
+            widget.destroy()
+        for option in self.options[self.current_question]:
+            tk.Radiobutton(self.option_frame, text=option, variable=self.selected_option, value=option).pack(anchor='w')
 
     def display_contact_details(self):
         contact_info_message = "Contact Details:\n"
@@ -73,7 +94,3 @@ class QuestionsFrame(tk.Frame):
         messagebox.showinfo("Contact Tracing Information", message)
         self.back_callback()
 
-    # prompt only 
-        #if in number 3-4 = "yes" and in number 5 ="Yes-Positve or Yes-pending"
-            # When was your most visit to this location?
-            # Since then until today, what places have you been? (beside home)
