@@ -7,7 +7,8 @@ class QuestionsFrame(tk.Frame):
         self.master = master
         self.back_callback = back_callback
         self.contact_info = {}
-
+        self.contact_info_completed = False
+        self.additional_questions_displayed = False
         self.questions = [
             "Have you been vaccinated for COVID-19?",
             "Do you experience any COVID-like symptoms in the past 7 days such as:",
@@ -27,8 +28,6 @@ class QuestionsFrame(tk.Frame):
 
         self.answers = []
         self.current_question = 0
-        self.display_additional_questions = False
-        self.completed = False
 
         self.selected_option = tk.StringVar()
 
@@ -46,39 +45,38 @@ class QuestionsFrame(tk.Frame):
     def save_answer(self):
         answer = self.selected_option.get()
         if answer:
-            self.answers.append(answer)
-            self.selected_option.set("")  # Reset the selected_option variable
-            self.show_next_question()
+            if not self.contact_info_completed:
+                contact_info = self.get_contact_info()
+                if contact_info:
+                    self.contact_info = contact_info
+                    self.contact_info_completed = True
+                else:
+                    messagebox.showerror("Error", "Please fill in all contact details.")
+                    return
+            else:
+                self.answers.append(answer)
+                self.selected_option.set("")
+                self.show_next_question()
         else:
             messagebox.showerror("Error", "Please select an option for the current question.")
 
     def show_next_question(self):
-        if self.display_additional_questions:
-            self.show_additional_questions()
-        elif self.completed:
+        if self.additional_questions_displayed:
             return
+        if self.current_question == 2 and len(self.answers) >= 3 and self.answers[2] == "Yes":
+            self.additional_questions_displayed = True
+            self.show_additional_questions()
+        elif self.current_question == 3 and len(self.answers) >= 4 and self.answers[3] == "Yes":
+            self.additional_questions_displayed = True
+            self.show_additional_questions()
+        elif self.current_question == 4 and len(self.answers) >= 5 and "Yes" in self.answers[4]:
+            self.additional_questions_displayed = True
+            self.show_additional_questions()
+        elif self.current_question < len(self.questions):
+            self.show_regular_question()
+            self.current_question += 1
         else:
-            if self.current_question == 2 and len(self.answers) >= 3:
-                if self.answers[2] == "Yes":
-                    self.display_additional_questions = True
-                    self.show_additional_questions()
-                    return
-            elif self.current_question == 3 and len(self.answers) >= 4:
-                if self.answers[3] == "Yes":
-                    self.display_additional_questions = True
-                    self.show_additional_questions()
-                    return
-            elif self.current_question == 4 and len(self.answers) >= 5:
-                if "Yes" in self.answers[4]:
-                    self.display_additional_questions = True
-                    self.show_additional_questions()
-                    return
-
-            if self.current_question < len(self.questions):
-                self.show_regular_question()
-                self.current_question += 1
-            else:
-                self.display_contact_details()
+            self.display_contact_details()
 
     def show_regular_question(self):
         self.question_label.config(text=self.questions[self.current_question])
@@ -94,6 +92,54 @@ class QuestionsFrame(tk.Frame):
         elif self.current_question == 3:
             self.question_label.config(text="Since then until today, what places have you been? (besides home)")
             self.show_entry_for_places_visited()
+
+    def show_entry_for_location_visit(self):
+        self.selected_option.set("")
+        for widget in self.option_frame.winfo_children():
+            widget.destroy()
+        self.location_visit_entry = tk.Entry(self.option_frame)
+        self.location_visit_entry.pack(padx=10, pady=5)
+        self.next_button.config(command=self.save_location_visit)
+
+    def save_location_visit(self):
+        location_visit = self.location_visit_entry.get()
+        if location_visit:
+            self.answers.append(location_visit)
+            self.additional_questions_displayed = False
+            self.show_next_question()
+        else:
+            messagebox.showerror("Error", "Please enter the location visit.")
+
+    def show_entry_for_places_visited(self):
+        self.selected_option.set("")
+        for widget in self.option_frame.winfo_children():
+            widget.destroy()
+        self.places_visited_entry = tk.Entry(self.option_frame)
+        self.places_visited_entry.pack(padx=10, pady=5)
+        self.next_button.config(command=self.save_places_visited)
+
+    def save_places_visited(self):
+        places_visited = self.places_visited_entry.get()
+        if places_visited:
+            self.answers.append(places_visited)
+            self.additional_questions_displayed = False
+            self.show_next_question()
+        else:
+            messagebox.showerror("Error", "Please enter the places visited.")
+
+    def get_contact_info(self):
+        name = self.master.contact_info_frame.entry_name.get()
+        email = self.master.contact_info_frame.entry_email.get()
+        phone = self.master.contact_info_frame.entry_phone.get()
+
+        if name and email and phone:
+            return {
+                "Name": name,
+                "Email": email,
+                "Phone": phone
+            }
+        else:
+            return None
 
     def display_contact_details(self):
         contact_info_message = "Contact Details:\n"
