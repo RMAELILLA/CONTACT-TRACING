@@ -2,9 +2,10 @@ import tkinter as tk
 from tkinter import messagebox
 
 class ContactInfoFrame(tk.Frame):
-    def __init__(self, master):
+    def __init__(self, master, next_callback):
         super().__init__(master)
         self.master = master
+        self.next_callback = next_callback
 
         self.label_name = tk.Label(self, text="Name:")
         self.label_name.grid(row=0, column=0, padx=10, pady=5)
@@ -33,26 +34,12 @@ class ContactInfoFrame(tk.Frame):
         phone = self.entry_phone.get()
 
         if name and email and phone:
-            contact_info = {
+            self.master.contact_info = {
                 "Name": name,
                 "Email": email,
                 "Phone": phone
             }
-            return contact_info
+
+            self.next_callback()
         else:
             messagebox.showerror("Error", "Please fill in all contact details.")
-            return None
-
-    def get_contact_info(self):
-        name = self.entry_name.get()
-        email = self.entry_email.get()
-        phone = self.entry_phone.get()
-
-        if name and email and phone:
-            return {
-                "Name": name,
-                "Email": email,
-                "Phone": phone
-            }
-        else:
-            return None
