@@ -16,14 +16,14 @@ class MainApp(tk.Tk):
 
     def show_contact_info_frame(self):
         self.questions_frame.grid_forget()
-        self.contact_info_frame.grid()
+        self.contact_info_frame.grid(row=0, column=0, padx=10, pady=5, columnspan=2)
 
     def show_questions_frame(self):
         contact_info = self.contact_info_frame.get_contact_info()
         if contact_info:
             self.questions_frame.contact_info = contact_info
             self.contact_info_frame.grid_forget()
-            self.questions_frame.grid()
+            self.questions_frame.grid(row=0, column=0, padx=10, pady=5, columnspan=2)
         else:
             tk.messagebox.showerror("Error", "Please fill in all contact details.")
 
