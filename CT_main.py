@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import messagebox
 from contact_info import ContactInfoFrame
 from questions import QuestionsFrame
 
@@ -11,7 +12,7 @@ class MainApp(tk.Tk):
 
         self.contact_info_frame.grid(row=0, column=0, padx=10, pady=5, columnspan=2)
         self.questions_frame.grid(row=0, column=0, padx=10, pady=5, columnspan=2)
-        self.questions_frame.grid_forget()
+        self.questions_frame.grid_forget()  # Hide the QuestionsFrame initially
 
     def show_contact_info_frame(self):
         self.questions_frame.grid_forget()

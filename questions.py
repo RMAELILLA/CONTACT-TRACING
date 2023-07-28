@@ -19,7 +19,7 @@ class QuestionsFrame(tk.Frame):
         self.options = [
             ["Not yet", "1st Dose", "2nd Dose (Fully Vaccinated)", "1st (Booster)", "2nd (Completed Booster Shot)"],
             ["Fever", "Cough", "Colds", "Muscle Cramps", "Sore Throat", "Diarrhea", "Headache", "Shortness of Breath",
-             "Difficulty in Breathing", "Loss of Taste", "Loss of Smell"],
+             "Difficulty in Breathing", "Loss of Taste", "Loss of Smell", "None of the above"],
             ["No", "Yes"],
             ["No", "Yes"],
             ["No", "Yes - Positive", "Yes - Negative", "Yes - Pending"]
@@ -27,6 +27,8 @@ class QuestionsFrame(tk.Frame):
 
         self.answers = []
         self.current_question = 0
+        self.display_additional_questions = False
+        self.completed = False
 
         self.selected_option = tk.StringVar()
 
@@ -45,43 +47,38 @@ class QuestionsFrame(tk.Frame):
         answer = self.selected_option.get()
         if answer:
             self.answers.append(answer)
-            self.selected_option.set("")
+            self.selected_option.set("")  # Reset the selected_option variable
             self.show_next_question()
         else:
-            messagebox.showerror("Error", "Please select an option.")
-
-    def show_entry_for_location_visit(self):
-        entry_label = tk.Label(self.option_frame, text="Date of most recent visit:")
-        entry_label.pack(anchor='w')
-        entry = tk.Entry(self.option_frame)
-        entry.pack(anchor='w')
-        self.answers.append(entry)
-
-    def show_entry_for_places_visited(self):
-        entry_label = tk.Label(self.option_frame, text="Places visited since exposure:")
-        entry_label.pack(anchor='w')
-        entry = tk.Entry(self.option_frame)
-        entry.pack(anchor='w')
-        self.answers.append(entry)
+            messagebox.showerror("Error", "Please select an option for the current question.")
 
     def show_next_question(self):
-        if self.current_question == 2:
-            if len(self.answers) > 2 and self.answers[2] == "Yes":
-                self.question_label.config(text="When was your most visit to this location?")
-                self.show_entry_for_location_visit()
-            else:
-                self.show_regular_question()
-        elif self.current_question == 3:
-            if len(self.answers) > 3 and self.answers[3] == "Yes":
-                self.question_label.config(text="Since then until today, what places have you been? (besides home)")
-                self.show_entry_for_places_visited()
-            else:
-                self.show_regular_question()
-        elif self.current_question < len(self.questions):
-            self.show_regular_question()
-            self.current_question += 1
+        if self.display_additional_questions:
+            self.show_additional_questions()
+        elif self.completed:
+            return
         else:
-            self.display_contact_details()
+            if self.current_question == 2 and len(self.answers) >= 3:
+                if self.answers[2] == "Yes":
+                    self.display_additional_questions = True
+                    self.show_additional_questions()
+                    return
+            elif self.current_question == 3 and len(self.answers) >= 4:
+                if self.answers[3] == "Yes":
+                    self.display_additional_questions = True
+                    self.show_additional_questions()
+                    return
+            elif self.current_question == 4 and len(self.answers) >= 5:
+                if "Yes" in self.answers[4]:
+                    self.display_additional_questions = True
+                    self.show_additional_questions()
+                    return
+
+            if self.current_question < len(self.questions):
+                self.show_regular_question()
+                self.current_question += 1
+            else:
+                self.display_contact_details()
 
     def show_regular_question(self):
         self.question_label.config(text=self.questions[self.current_question])
@@ -89,6 +86,14 @@ class QuestionsFrame(tk.Frame):
             widget.destroy()
         for option in self.options[self.current_question]:
             tk.Radiobutton(self.option_frame, text=option, variable=self.selected_option, value=option).pack(anchor='w')
+
+    def show_additional_questions(self):
+        if self.current_question == 2:
+            self.question_label.config(text="When was your most visit to this location?")
+            self.show_entry_for_location_visit()
+        elif self.current_question == 3:
+            self.question_label.config(text="Since then until today, what places have you been? (besides home)")
+            self.show_entry_for_places_visited()
 
     def display_contact_details(self):
         contact_info_message = "Contact Details:\n"
