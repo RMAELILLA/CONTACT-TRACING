@@ -40,7 +40,7 @@ class QuestionsFrame(tk.Frame):
         self.next_button = tk.Button(self, text="Next", command=self.save_answer)
         self.next_button.grid(row=2, column=0, columnspan=2, padx=10, pady=10)
 
-        self.show_next_question()
+        self.show_regular_question()
 
     def save_answer(self):
         answer = self.selected_option.get()
@@ -72,9 +72,9 @@ class QuestionsFrame(tk.Frame):
         elif self.current_question == 4 and len(self.answers) >= 5 and "Yes" in self.answers[4]:
             self.additional_questions_displayed = True
             self.show_additional_questions()
-        elif self.current_question < len(self.questions):
-            self.show_regular_question()
+        elif self.current_question < len(self.questions) - 1:
             self.current_question += 1
+            self.show_regular_question()
         else:
             self.display_contact_details()
 
@@ -105,7 +105,6 @@ class QuestionsFrame(tk.Frame):
         location_visit = self.location_visit_entry.get()
         if location_visit:
             self.answers.append(location_visit)
-            self.additional_questions_displayed = False
             self.show_next_question()
         else:
             messagebox.showerror("Error", "Please enter the location visit.")
@@ -122,7 +121,6 @@ class QuestionsFrame(tk.Frame):
         places_visited = self.places_visited_entry.get()
         if places_visited:
             self.answers.append(places_visited)
-            self.additional_questions_displayed = False
             self.show_next_question()
         else:
             messagebox.showerror("Error", "Please enter the places visited.")
