@@ -28,3 +28,10 @@ def collect_information():
     contact_details["COVID-like Symptoms"] = ", ".join(
         symptom for symptom, response in zip(covid_symptoms_options, symptoms_response) if response.lower() == 'y'
     )
+
+    if (
+        (exposure_response.lower() == 'y' or contact_symptoms_response.lower() == 'y') and
+        (testing_options[testing_response - 1] == "Yes-positive" or testing_options[testing_response - 1] == "Yes-Pending")
+    ):
+        contact_details["Location of Most Recent Visit"] = input("\nWhen was your most recent visit to this location? ")
+        contact_details["Places Visited Since Most Recent Visit"] = input("\nSince then until today, what places have you been? (beside home) ")
