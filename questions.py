@@ -99,6 +99,33 @@ class QuestionsFrame(tk.Frame):
         elif self.current_question == 3:
             self.question_label.config(text="Since then until today, what places have you been? (besides home)")
             self.show_entry_for_places_visited()
+        elif self.current_question == 4:
+            if any(answer.startswith("Yes") for answer in self.answers[3:]):
+                if self.answers[3] == "Yes - Positive" or self.answers[4] == "Yes - Positive" or self.answers[4] == "Yes - Pending":
+                    self.question_label.config(text="Additional question for Positive case:")
+                    self.show_additional_question_positive_case()
+                else:
+                    self.additional_questions_displayed = True
+                    self.show_additional_questions()
+        elif self.current_question == 5:
+            self.additional_questions_displayed = True
+            self.show_additional_questions()
+
+    def show_additional_question_positive_case(self):
+        self.selected_option.set("")
+        for widget in self.option_frame.winfo_children():
+            widget.destroy()
+        tk.Radiobutton(self.option_frame, text="Yes", variable=self.selected_option, value="Yes").pack(anchor='w')
+        tk.Radiobutton(self.option_frame, text="No", variable=self.selected_option, value="No").pack(anchor='w')
+        self.next_button.config(command=self.save_additional_question_positive_case)
+    
+    def save_additional_question_positive_case(self):
+        answer = self.selected_option.get()
+        if answer:
+            self.answers.append(answer)
+            self.show_next_question()
+        else:
+            messagebox.showerror("Error", "Please select an option for the current question.")
 
     def show_entry_for_location_visit(self):
         self.selected_option.set("")
