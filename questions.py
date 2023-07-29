@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
+from questions2 import AdditionalQuestionsFrame
 
 class QuestionsFrame(tk.Frame):
     def __init__(self, master, back_callback):
@@ -59,8 +60,7 @@ class QuestionsFrame(tk.Frame):
 
                 if self.current_question == 4 and any(answer.startswith("Yes") for answer in self.answers[3:]):
                     if self.answers[3] == "Yes - Positive" or self.answers[4] == "Yes - Positive" or self.answers[4] == "Yes - Pending":
-                        self.question_label.config(text="When was your most visit to this location?")
-                        self.show_entry_for_location_visit()
+                        self.show_additional_questions()
                         return
 
                 self.show_next_question()
@@ -100,71 +100,18 @@ class QuestionsFrame(tk.Frame):
             tk.Radiobutton(self.option_frame, text=option, variable=self.selected_option, value=option).pack(anchor='w')
 
     def show_additional_questions(self):
-        if self.current_question == 2:
-            self.question_label.config(text="When was your most visit to this location?")
-            self.show_entry_for_location_visit()
-        elif self.current_question == 3:
-            self.question_label.config(text="Since then until today, what places have you been? (besides home)")
-            self.show_entry_for_places_visited()
-        elif self.current_question == 4:
-            if any(answer.startswith("Yes") for answer in self.answers[3:]):
-                if self.answers[3] == "Yes - Positive" or self.answers[4] == "Yes - Positive" or self.answers[4] == "Yes - Pending":
-                    self.question_label.config(text="Additional question for Positive case:")
-                    self.show_additional_question_positive_case()
-                else:
-                    self.additional_questions_displayed = True
-                    self.show_additional_questions()
-        elif self.current_question == 5:
-            self.additional_questions_displayed = True
-            self.show_additional_questions()
-
-    def show_additional_question_positive_case(self):
-        self.selected_option.set("")
+        self.question_label.config(text="Additional Questions:")
+        self.next_button.config(text="Next", command=self.save_additional_question)
         for widget in self.option_frame.winfo_children():
             widget.destroy()
-        tk.Radiobutton(self.option_frame, text="Yes", variable=self.selected_option, value="Yes").pack(anchor='w')
-        tk.Radiobutton(self.option_frame, text="No", variable=self.selected_option, value="No").pack(anchor='w')
-        self.next_button.config(command=self.save_additional_question_positive_case)
-    
-    def save_additional_question_positive_case(self):
-        answer = self.selected_option.get()
-        if answer:
-            self.answers.append(answer)
-            self.show_next_question()
-        else:
-            messagebox.showerror("Error", "Please select an option for the current question.")
 
-    def show_entry_for_location_visit(self):
-        self.selected_option.set("")
-        for widget in self.option_frame.winfo_children():
-            widget.destroy()
-        self.location_visit_entry = tk.Entry(self.option_frame)
-        self.location_visit_entry.pack(padx=10, pady=5)
-        self.next_button.config(command=self.save_location_visit)
+        self.additional_questions_frame = AdditionalQuestionsFrame(self, self.show_next_question)
+        self.additional_questions_frame.grid(row=1, column=0, padx=10, pady=5, columnspan=2)
 
-    def save_location_visit(self):
-        location_visit = self.location_visit_entry.get()
-        if location_visit:
-            self.answers.append(location_visit)
-            self.show_next_question()
-        else:
-            messagebox.showerror("Error", "Please enter the location visit.")
-
-    def show_entry_for_places_visited(self):
-        self.selected_option.set("")
-        for widget in self.option_frame.winfo_children():
-            widget.destroy()
-        self.places_visited_entry = tk.Entry(self.option_frame)
-        self.places_visited_entry.pack(padx=10, pady=5)
-        self.next_button.config(command=self.save_places_visited)
-
-    def save_places_visited(self):
-        places_visited = self.places_visited_entry.get()
-        if places_visited:
-            self.answers.append(places_visited)
-            self.show_next_question()
-        else:
-            messagebox.showerror("Error", "Please enter the places visited.")
+    def save_additional_question(self):
+        self.answers.extend(self.additional_questions_frame.answers)
+        self.additional_questions_frame.destroy()
+        self.show_next_question()
 
     def get_contact_info(self):
         name = self.master.contact_info_frame.entry_name.get()
