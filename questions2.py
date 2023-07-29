@@ -42,9 +42,20 @@ class AdditionalQuestionsFrame(tk.Frame):
             self.display_contact_details()
 
     def display_contact_details(self):
-        message = "Additional Answers:\n"
-        for i in range(len(self.questions)):
-            message += f"{self.questions[i]}\nAnswer: {self.answers[i]}\n"
+        contact_info_message = "Contact Details:\n"
+        for key, value in self.contact_info.items():
+            contact_info_message += f"{key}: {value}\n"
 
-        messagebox.showinfo("Additional Information", message)
-        self.next_callback()
+        message = contact_info_message + "\nAnswers to Questions:\n"
+        for i in range(len(self.questions)):
+            message += f"{i + 1}. {self.questions[i]}\nAnswer: {self.answers[i]}\n"
+
+        message += "\nAdditional Answers:\n"
+        for i in range(len(self.questions), len(self.answers)):
+            message += f"{self.answers[i]}\n"
+
+        messagebox.showinfo("Contact Tracing Information", message)
+        self.back_callback()
+
+        self.contact_info_completed = False
+        self.contact_info = {}

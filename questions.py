@@ -112,9 +112,9 @@ class QuestionsFrame(tk.Frame):
         self.answers.extend(self.additional_questions_frame.answers)
         for key, value in self.contact_info.items():
             self.answers.append(f"{key}: {value}")
-            
+
         self.additional_questions_frame.destroy()
-        self.show_next_question()
+        self.display_contact_details()
 
     def get_contact_info(self):
         name = self.master.contact_info_frame.entry_name.get()
