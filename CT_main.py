@@ -52,8 +52,10 @@ class MainApp(tk.Tk):
         messagebox.showinfo("Contact Tracing Information", message)
         self.reset_application()
 
+        if self.questions_frame.current_question == len(self.questions_frame.questions):
+            self.write_to_csv()
+
     def reset_application(self):
-        # Check if the QuestionsFrame exists before calling reset
         if self.questions_frame:
             self.questions_frame.reset()
             self.questions_frame.destroy()

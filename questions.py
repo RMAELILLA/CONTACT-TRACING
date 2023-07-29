@@ -110,6 +110,7 @@ class QuestionsFrame(tk.Frame):
                 self.show_regular_question()
             else:
                 self.display_contact_details()
+                self.master.write_to_csv()
 
     def show_regular_question(self):
         self.question_label.config(text=self.questions[self.current_question])
