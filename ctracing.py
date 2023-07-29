@@ -29,9 +29,27 @@ def collect_information():
         symptom for symptom, response in zip(covid_symptoms_options, symptoms_response) if response.lower() == 'y'
     )
 
+    exposure_response = input("\n3. Have you had exposure to a probable confirmed COVID case in the last 14 days? (y/n): ")
+    contact_details["Exposure to Probable Confirmed COVID Cases"] = "Yes" if exposure_response.lower() == 'y' else "No"
+
+    contact_symptoms_response = input("\n4. Have you had contact with someone with COVID-like symptoms in the past 7 days? (y/n): ")
+    contact_details["Contact with COVID-like Symptoms"] = "Yes" if contact_symptoms_response.lower() == 'y' else "No"
+
+    testing_options = ["No", "Yes-positive", "Yes-Negative", "Yes-Pending"]
+    testing_response = int(input("\n5. Have you been tested for COVID-19 in the last 14 days? (Enter the corresponding number)\n" +
+                                 "\n".join(f"{i}. {option}" for i, option in enumerate(testing_options, start=1)) +
+                                 "\nYour choice: "))
+    contact_details["COVID-19 Testing Status"] = testing_options[testing_response - 1]
+
     if (
         (exposure_response.lower() == 'y' or contact_symptoms_response.lower() == 'y') and
         (testing_options[testing_response - 1] == "Yes-positive" or testing_options[testing_response - 1] == "Yes-Pending")
     ):
         contact_details["Location of Most Recent Visit"] = input("\nWhen was your most recent visit to this location? ")
         contact_details["Places Visited Since Most Recent Visit"] = input("\nSince then until today, what places have you been? (beside home) ")
+
+    other_contact_details = {
+        "Name": input("\nOther Contact Details - Name: "),
+        "Relation to the contact person": input("Other Contact Details - Relation to the contact person: "),
+        "Contact Number": input("Other Contact Details - Contact Number: ")
+    }
