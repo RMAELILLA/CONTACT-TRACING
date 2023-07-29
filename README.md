@@ -1,7 +1,7 @@
 # Contact-Tracing without GUI
 The program can be run in the Python environment, and it will guide the user through each step of the contact tracing information collection process.
     
-# ❓ How this program run: Fan Class
+# ❓ How this program run: Contact-Tracing (without GUI)
 - Save the corrected code into three separate files: FClass.py, FCUserDisplay.py, and TestFan.py.
 - The provided program collects contact tracing information from the user and saves it to a CSV file named "contact_tracing_info.csv." The program uses the get_user_input function to get valid responses from the user and handles any exceptions that may occur during input.
 - The program prompts the user to enter contact details, including name, email address, and phone number.
