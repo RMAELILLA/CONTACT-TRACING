@@ -58,6 +58,8 @@ class QuestionsFrame(tk.Frame):
         self.answers = []
         self.current_question = 0
         self.selected_option.set("")
+        if self.additional_questions_frame:
+            self.additional_questions_frame.destroy()
         self.show_regular_question()
 
     def save_answer(self):
