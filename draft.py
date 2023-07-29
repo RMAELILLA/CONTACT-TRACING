@@ -1,13 +1,13 @@
 # Create covid contact tracing app with GUI (Tkinter)
-
-# Create a program that ask user for typical information found in covid contact tracing app
-# create each question by each frame after prompt the contact details
+# Create a program that ask user for information found in covid contact tracing app
 
 # Contact Details
     # Name
     # Email Address
     # Phone Number
 
+# create another 2 frame after contact details
+# first frame should consist the first five questions
     # Prompt each frame for each number
     # 1. Have you been vaccinated for COVID-19?
         # Not yet
@@ -40,10 +40,8 @@
         # Yes-Negative
         # Yes-Pending
 
-    # prompt only 
-        #if in number 3-4 = "yes" and in number 5 ="Yes-Positve or Yes-pending"
-            # When was your most visit to this location?
-            # Since then until today, what places have you been? (beside home)
-
-# Write the collected information in a file (csv)
-# The app should be able to add and search entry
+# 2nd frame should prompt only if
+    # if in question number 3 and question number 4 += "yes" and if question number 5 ="Yes-Positve or Yes-pending"
+        # When was your most visit to this location?
+        # Since then until today, what places have you been? (beside home)
+    # PROMPT ONLY IF it met the above conditions
