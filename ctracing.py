@@ -1,3 +1,5 @@
+import csv
+
 def collect_information():
     contact_details = {
         "Name": input("Enter your name: "),
@@ -53,3 +55,4 @@ def collect_information():
         "Relation to the contact person": input("Other Contact Details - Relation to the contact person: "),
         "Contact Number": input("Other Contact Details - Contact Number: ")
     }
+
