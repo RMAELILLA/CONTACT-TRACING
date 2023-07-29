@@ -16,3 +16,15 @@ def collect_information():
                                      "\n".join(f"{i}. {option}" for i, option in enumerate(vaccination_options, start=1)) +
                                      "\nYour choice: "))
     contact_details["Vaccination Status"] = vaccination_options[vaccination_response - 1]
+
+    covid_symptoms_options = [
+        "Fever", "Cough", "Colds", "Muscle Cramps", "Sore throat", "Diarrhea",
+        "Headache", "Shortness of breath", "Difficulty in breathing",
+        "Loss of Taste", "Loss of Smell", "None of the above"
+    ]
+    print("\n2. Do you experience any COVID-like symptoms in the past 7 days?")
+    print("Enter 'y' for Yes and 'n' for No (e.g., ynnynny).")
+    symptoms_response = input("".join(f"{i}. {option}\n" for i, option in enumerate(covid_symptoms_options, start=1)))
+    contact_details["COVID-like Symptoms"] = ", ".join(
+        symptom for symptom, response in zip(covid_symptoms_options, symptoms_response) if response.lower() == 'y'
+    )
