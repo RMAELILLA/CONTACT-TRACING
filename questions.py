@@ -56,6 +56,13 @@ class QuestionsFrame(tk.Frame):
             else:
                 self.answers.append(answer)
                 self.selected_option.set("")
+
+                if self.current_question == 4 and any(answer.startswith("Yes") for answer in self.answers[3:]):
+                    if self.answers[3] == "Yes - Positive" or self.answers[4] == "Yes - Positive" or self.answers[4] == "Yes - Pending":
+                        self.question_label.config(text="When was your most visit to this location?")
+                        self.show_entry_for_location_visit()
+                        return
+
                 self.show_next_question()
         else:
             messagebox.showerror("Error", "Please select an option for the current question.")
