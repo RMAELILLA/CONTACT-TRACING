@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
+import csv
 from contact_info import ContactInfoFrame
 from questions import QuestionsFrame
 
@@ -13,6 +14,8 @@ class MainApp(tk.Tk):
         self.contact_info_frame.grid(row=0, column=0, padx=10, pady=5, columnspan=2)
         self.questions_frame.grid(row=0, column=0, padx=10, pady=5, columnspan=2)
         self.questions_frame.grid_forget()
+
+        self.collected_data = []
 
     def show_contact_info_frame(self):
         self.questions_frame.grid_forget()
@@ -43,12 +46,31 @@ class MainApp(tk.Tk):
         for i in range(len(self.questions_frame.questions)):
             message += f"{i + 1}. {self.questions_frame.questions[i]}\nAnswer: {self.questions_frame.answers[i]}\n"
 
+        self.collected_data.append(self.questions_frame.contact_info)
+        self.collected_data[-1].update(dict(zip(self.questions_frame.questions, self.questions_frame.answers)))
+
         messagebox.showinfo("Contact Tracing Information", message)
         self.reset_application()
 
     def reset_application(self):
-        self.questions_frame.reset()
+        # Check if the QuestionsFrame exists before calling reset
+        if self.questions_frame:
+            self.questions_frame.reset()
+            self.questions_frame.destroy()
+            self.questions_frame = None
+
         self.contact_info_frame.reset()
+
+    def write_to_csv(self):
+        try:
+            with open("ctdata.csv", mode="w", newline="") as csvfile:
+                fieldnames = ["Name", "Email", "Phone"] + self.questions_frame.questions
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                writer.writeheader()
+                for data in self.collected_data:
+                    writer.writerow(data)
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to write to CSV file: {e}")
 
 if __name__ == "__main__":
     app = MainApp()

@@ -45,11 +45,5 @@
             # When was your most visit to this location?
             # Since then until today, what places have you been? (beside home)
 
-    # Other Contact Detail
-        # Name
-        # Relation to the contact person
-        # Contact Number
-        # Email Address
-
 # Write the collected information in a file (csv)
 # The app should be able to add and search entry

@@ -124,13 +124,17 @@ class QuestionsFrame(tk.Frame):
         for widget in self.option_frame.winfo_children():
             widget.destroy()
 
+        if self.additional_questions_frame:
+            self.additional_questions_frame.destroy()
+
         self.additional_questions_frame = AdditionalQuestionsFrame(
             self, self.contact_info, self.show_next_question, self.back_callback
         )
         self.additional_questions_frame.grid(row=1, column=0, padx=10, pady=5, columnspan=2)
-    
+
     def back_callback(self):
-        self.additional_questions_frame.destroy()
+        if self.additional_questions_frame:
+            self.additional_questions_frame.destroy()
         self.show_next_question()
 
     def save_additional_question(self):
