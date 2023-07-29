@@ -1,8 +1,21 @@
 # Contact-Tracing without GUI
 The program can be run in the Python environment, and it will guide the user through each step of the contact tracing information collection process.
-    
+
+# ❓ How this program run: Contact-Tracing (with GUI)
+- Creates a covid contact tracing app with GUI (Tkinter)
+- Create a program that ask user for information found in covid contact tracing app
+- Prompt each frame for each number
+- if in question number 3 and question number 4 += "yes" and if question number 5 ="Yes-Positve or Yes-pending"
+        # When was your most visit to this location?
+        # Since then until today, what places have you been? (beside home)
+        # PROMPT ONLY IF it met the above conditions
+  - However this is still in process as it can't run successfully
+  - Still doesn't write to csv file
+  - On process coding
+ 
+_Note: if you are interested in these code, a great help will be an honor, and will be credited_
+
 # ❓ How this program run: Contact-Tracing (without GUI)
-- Save the corrected code into three separate files: FClass.py, FCUserDisplay.py, and TestFan.py.
 - The provided program collects contact tracing information from the user and saves it to a CSV file named "contact_tracing_info.csv." The program uses the get_user_input function to get valid responses from the user and handles any exceptions that may occur during input.
 - The program prompts the user to enter contact details, including name, email address, and phone number.
 - The program asks if the user has been vaccinated for COVID-19, and the user selects the appropriate option from the given choices.
