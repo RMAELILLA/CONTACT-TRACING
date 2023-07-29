@@ -64,7 +64,7 @@ class QuestionsFrame(tk.Frame):
         if self.additional_questions_displayed:
             return
 
-        self.additional_questions_displayed = False  # Reset the flag for each new question
+        self.additional_questions_displayed = False
 
         if self.current_question == 1 and len(self.answers) >= 2 and self.answers[1] == "Yes":
             self.additional_questions_displayed = True
