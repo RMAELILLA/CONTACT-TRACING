@@ -48,8 +48,10 @@ class AdditionalQuestionsFrame(tk.Frame):
             contact_info_message += f"{key}: {value}\n"
 
         message = contact_info_message + "\nAnswers to Questions:\n"
-        for i in range(len(self.questions)):
-            message += f"{i + 1}. {self.questions[i]}\nAnswer: {self.answers[i]}\n"
+        num_questions = len(self.questions)
+        for i in range(num_questions):
+            if i < len(self.answers):
+                message += f"{i + 1}. {self.questions[i]}\nAnswer: {self.answers[i]}\n"
 
         messagebox.showinfo("Contact Tracing Information", message)
         self.back_callback()

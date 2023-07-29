@@ -38,6 +38,11 @@ class ContactInfoFrame(tk.Frame):
         else:
             messagebox.showerror("Error", "Please fill in all contact details.")
             return
+        
+    def reset(self):
+        self.entry_name.delete(0, tk.END)
+        self.entry_email.delete(0, tk.END)
+        self.entry_phone.delete(0, tk.END)
 
     def get_contact_info(self):
         name = self.entry_name.get()
