@@ -43,7 +43,6 @@ class MainApp(tk.Tk):
                 self.additional_questions_frame = AdditionalQuestionsFrame(self, self.show_next_question)
                 self.additional_questions_frame.set_contact_info(self.questions_frame.contact_info)
                 self.additional_questions_frame.geometry("400x200")
-                self.additional_questions_frame.title("Additional Questions")
             else:
                 self.show_next_question()
         else:
