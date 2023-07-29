@@ -56,3 +56,9 @@ def collect_information():
         "Contact Number": input("Other Contact Details - Contact Number: ")
     }
 
+    with open("contact_tracing_info.csv", "a", newline='') as file:
+        writer = csv.DictWriter(file, fieldnames=[*contact_details, *other_contact_details])
+        if file.tell() == 0:
+            writer.writeheader()
+
+        writer.writerow({**contact_details, **other_contact_details})
