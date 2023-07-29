@@ -105,11 +105,14 @@ class QuestionsFrame(tk.Frame):
         for widget in self.option_frame.winfo_children():
             widget.destroy()
 
-        self.additional_questions_frame = AdditionalQuestionsFrame(self, self.show_next_question)
+        self.additional_questions_frame = AdditionalQuestionsFrame(self, self.contact_info, self.show_next_question)
         self.additional_questions_frame.grid(row=1, column=0, padx=10, pady=5, columnspan=2)
 
     def save_additional_question(self):
         self.answers.extend(self.additional_questions_frame.answers)
+        for key, value in self.contact_info.items():
+            self.answers.append(f"{key}: {value}")
+            
         self.additional_questions_frame.destroy()
         self.show_next_question()
 
@@ -138,3 +141,6 @@ class QuestionsFrame(tk.Frame):
 
         messagebox.showinfo("Contact Tracing Information", message)
         self.back_callback()
+
+        self.contact_info_completed = False
+        self.contact_info = {}
