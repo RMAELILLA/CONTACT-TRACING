@@ -62,3 +62,5 @@ def collect_information():
             writer.writeheader()
 
         writer.writerow({**contact_details, **other_contact_details})
+
+    print("Information successfully recorded in 'contact_tracing_info.csv'.")
