@@ -1,14 +1,15 @@
 import tkinter as tk
 from tkinter import messagebox
 
-class AdditionalQuestionsFrame(tk.Toplevel):
-    def __init__(self, master, back_callback):
+class AdditionalQuestionsFrame(tk.Frame):
+    def __init__(self, master, contact_info, next_callback):
         super().__init__(master)
         self.master = master
-        self.back_callback = back_callback
+        self.contact_info = contact_info
+        self.next_callback = next_callback
 
         self.questions = [
-            "When was your most visit to this location?",
+            "When was your most recent visit to this location?",
             "Since then until today, what places have you been? (besides home)"
         ]
 
@@ -46,5 +47,4 @@ class AdditionalQuestionsFrame(tk.Toplevel):
             message += f"{self.questions[i]}\nAnswer: {self.answers[i]}\n"
 
         messagebox.showinfo("Additional Information", message)
-        self.destroy()
-        self.back_callback()
+        self.next_callback()

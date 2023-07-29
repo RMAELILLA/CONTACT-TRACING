@@ -41,6 +41,7 @@ class MainApp(tk.Tk):
         if len(answers) >= 3 and answers[2] == "Yes":
             if answers[3] == "Yes - Positive" or answers[4] == "Yes - Pending":
                 self.additional_questions_frame = AdditionalQuestionsFrame(self, self.show_next_question)
+                self.additional_questions_frame.set_contact_info(self.questions_frame.contact_info)
                 self.additional_questions_frame.geometry("400x200")
                 self.additional_questions_frame.title("Additional Questions")
             else:
@@ -61,8 +62,6 @@ class MainApp(tk.Tk):
         self.questions_frame.grid_forget()
         self.contact_info_frame.grid(row=0, column=0, padx=10, pady=5, columnspan=2)
         self.additional_questions_frame = None
-        self.questions_frame.grid_forget()
-        self.contact_info_frame.grid(row=0, column=0, padx=10, pady=5, columnspan=2)
 
 if __name__ == "__main__":
     app = MainApp()
