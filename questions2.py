@@ -2,11 +2,12 @@ import tkinter as tk
 from tkinter import messagebox
 
 class AdditionalQuestionsFrame(tk.Frame):
-    def __init__(self, master, contact_info, next_callback):
+    def __init__(self, master, contact_info, next_callback, back_callback):
         super().__init__(master)
         self.master = master
         self.contact_info = contact_info
         self.next_callback = next_callback
+        self.back_callback = back_callback
 
         self.questions = [
             "When was your most recent visit to this location?",
@@ -55,6 +56,7 @@ class AdditionalQuestionsFrame(tk.Frame):
             message += f"{self.answers[i]}\n"
 
         messagebox.showinfo("Contact Tracing Information", message)
+        self.back_callback()  # Use back_callback here
 
         self.contact_info_completed = False
         self.contact_info = {}

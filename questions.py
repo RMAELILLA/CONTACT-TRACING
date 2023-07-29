@@ -100,12 +100,19 @@ class QuestionsFrame(tk.Frame):
             tk.Radiobutton(self.option_frame, text=option, variable=self.selected_option, value=option).pack(anchor='w')
 
     def show_additional_questions(self):
+        self.question_label.config(text="Additional Questions:")
         self.next_button.config(text="Next", command=self.save_additional_question)
         for widget in self.option_frame.winfo_children():
             widget.destroy()
 
-        self.additional_questions_frame = AdditionalQuestionsFrame(self, self.contact_info, self.show_next_question)
+        self.additional_questions_frame = AdditionalQuestionsFrame(
+            self, self.contact_info, self.show_next_question, self.back_callback
+        )
         self.additional_questions_frame.grid(row=1, column=0, padx=10, pady=5, columnspan=2)
+    
+    def back_callback(self):
+        self.additional_questions_frame.destroy()
+        self.show_next_question()
 
     def save_additional_question(self):
         self.answers.extend(self.additional_questions_frame.answers)
