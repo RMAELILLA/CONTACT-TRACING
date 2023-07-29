@@ -100,7 +100,6 @@ class QuestionsFrame(tk.Frame):
             tk.Radiobutton(self.option_frame, text=option, variable=self.selected_option, value=option).pack(anchor='w')
 
     def show_additional_questions(self):
-        self.question_label.config(text="Additional Questions:")
         self.next_button.config(text="Next", command=self.save_additional_question)
         for widget in self.option_frame.winfo_children():
             widget.destroy()

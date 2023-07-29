@@ -55,7 +55,6 @@ class AdditionalQuestionsFrame(tk.Frame):
             message += f"{self.answers[i]}\n"
 
         messagebox.showinfo("Contact Tracing Information", message)
-        self.back_callback()
 
         self.contact_info_completed = False
         self.contact_info = {}
